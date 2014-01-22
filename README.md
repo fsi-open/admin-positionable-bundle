@@ -3,7 +3,7 @@
 This bundle provides way to change position of item on the list gradually.
 This mean that position will be changed by 1.
 
-`FSiAdminPositionableBundle` works with conjunction with [Tree - Nestedset behavior extension for Doctrine 2](https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/sortable.md)
+`FSiAdminPositionableBundle` works with conjunction with [Sortable behavior extension for Doctrine2](https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/sortable.md)
 
 ## Usage
 
