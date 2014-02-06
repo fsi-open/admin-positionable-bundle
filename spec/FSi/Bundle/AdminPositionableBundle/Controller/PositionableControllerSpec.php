@@ -69,11 +69,11 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->shouldBeCalled()
             ->willReturn('sample-path');
 
-        $this->decreasePositionAction($element, 1)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response = $this->decreasePositionAction($element, 1);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     function it_increase_position_when_increase_position_action_called(
@@ -91,10 +91,10 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->shouldBeCalled()
             ->willReturn('sample-path');
 
-        $this->increasePositionAction($element, 1)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response = $this->increasePositionAction($element, 1);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 }
