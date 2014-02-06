@@ -2,14 +2,13 @@
 
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use Doctrine\Common\Persistence\ObjectManager;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @mixin \FSi\Bundle\AdminPositionableBundle\Controller\PositionableController
@@ -17,19 +16,20 @@ use Symfony\Component\HttpFoundation\Request;
 class PositionableControllerSpec extends ObjectBehavior
 {
     function let(
-        EntityManager $em,
         Router $router,
-        AbstractCRUD $element,
-        DoctrineDataIndexer $indexer
+        CRUDElement $element,
+        DoctrineDataIndexer $indexer,
+        ObjectManager $om
     ) {
         $element->getId()->willReturn('slides');
         $element->getDataIndexer()->willReturn($indexer);
+        $element->getObjectManager()->willReturn($om);
 
-        $this->beConstructedWith($em, $router);
+        $this->beConstructedWith($router);
     }
 
     function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
-        AbstractCRUD $element,
+        CRUDElement $element,
         DoctrineDataIndexer $indexer
     ) {
         $indexer->getData(666)->willReturn(new \StdClass());
@@ -42,7 +42,7 @@ class PositionableControllerSpec extends ObjectBehavior
     }
 
     function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
-        AbstractCRUD $element,
+        CRUDElement $element,
         DoctrineDataIndexer $indexer
     ) {
         $indexer->getData(666)->willThrow('FSi\Component\DataIndexer\Exception\RuntimeException');
@@ -55,46 +55,46 @@ class PositionableControllerSpec extends ObjectBehavior
     }
 
     function it_decrease_position_when_decrease_position_action_called(
-        AbstractCRUD $element,
+        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
-        EntityManager $em,
+        ObjectManager $om,
         Router $router
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
         $positionableEntity->decreasePosition()->shouldBeCalled();
 
-        $em->persist($positionableEntity)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $om->persist($positionableEntity)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->shouldBeCalled()
             ->willReturn('sample-path');
 
-        $this->decreasePositionAction($element, 1)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response = $this->decreasePositionAction($element, 1);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     function it_increase_position_when_increase_position_action_called(
-        AbstractCRUD $element,
+        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
-        EntityManager $em,
+        ObjectManager $om,
         Router $router
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
         $positionableEntity->increasePosition()->shouldBeCalled();
 
-        $em->persist($positionableEntity)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $om->persist($positionableEntity)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->shouldBeCalled()
             ->willReturn('sample-path');
 
-        $this->increasePositionAction($element, 1)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response = $this->increasePositionAction($element, 1);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 }
