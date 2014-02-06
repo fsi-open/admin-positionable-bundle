@@ -6,7 +6,6 @@
 
     <services>
         <service id="fsi_admin_positionable.controller.positionable" class="FSi\Bundle\AdminPositionableBundle\Controller\PositionableController">
-            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
         </service>
     </services>
