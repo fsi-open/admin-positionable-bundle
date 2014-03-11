@@ -9,3 +9,6 @@ script:
     - composer self-update
     - composer update -n --prefer-source
     - ./bin/phpspec run -f pretty
+
+notifications:
+  irc: "irc.freenode.org#fsi-open"
