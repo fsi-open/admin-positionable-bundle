@@ -25,6 +25,8 @@ class PositionableController
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param $id
+     * @throws \RuntimeException
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      * @return RedirectResponse
      */
     public function increasePositionAction(CRUDElement $element, $id)
@@ -44,6 +46,8 @@ class PositionableController
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param $id
+     * @throws \RuntimeException
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      * @return RedirectResponse
      */
     public function decreasePositionAction(CRUDElement $element, $id)
@@ -71,7 +75,7 @@ class PositionableController
         $entity = $element->getDataIndexer()->getData($id);
 
         if (!$entity instanceof PositionableInterface) {
-            throw new \RuntimeException('Entity with id %s does not implement PositionableInterface');
+            throw new \RuntimeException(sprintf('Entity with id %s does not implement PositionableInterface', $id));
         }
 
         return $entity;
