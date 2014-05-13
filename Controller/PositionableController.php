@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
@@ -23,7 +23,7 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
      * @param $id
      * @throws \RuntimeException
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
@@ -44,7 +44,7 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
      * @param $id
      * @throws \RuntimeException
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
@@ -65,7 +65,7 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
      * @param int $id
      * @throws \RuntimeException
      * @return PositionableInterface

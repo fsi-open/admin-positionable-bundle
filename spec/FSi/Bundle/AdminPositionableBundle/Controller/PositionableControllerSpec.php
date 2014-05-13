@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
