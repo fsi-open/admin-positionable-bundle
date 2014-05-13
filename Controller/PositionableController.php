@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
