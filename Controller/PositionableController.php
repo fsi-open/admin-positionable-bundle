@@ -5,19 +5,19 @@ namespace FSi\Bundle\AdminPositionableBundle\Controller;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 class PositionableController
 {
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
     /**
-     * @param Router $router
+     * @param RouterInterface $router
      */
-    public function __construct(Router $router)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
