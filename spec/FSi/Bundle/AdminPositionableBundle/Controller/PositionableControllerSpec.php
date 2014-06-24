@@ -8,7 +8,7 @@ use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @mixin \FSi\Bundle\AdminPositionableBundle\Controller\PositionableController
@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 class PositionableControllerSpec extends ObjectBehavior
 {
     function let(
-        Router $router,
+        RouterInterface $router,
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         ObjectManager $om
@@ -59,7 +59,7 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         ObjectManager $om,
-        Router $router
+        RouterInterface $router
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
@@ -81,7 +81,7 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         ObjectManager $om,
-        Router $router
+        RouterInterface $router
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
