@@ -24,6 +24,8 @@ class PositionableControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('slides');
         $element->getDataIndexer()->willReturn($indexer);
         $element->getObjectManager()->willReturn($om);
+        $element->getRoute()->willReturn('fsi_admin_crud_list');
+        $element->getRouteParameters()->willReturn(array('element' => 'slides'));
 
         $this->beConstructedWith($router);
     }
