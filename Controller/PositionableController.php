@@ -39,7 +39,7 @@ class PositionableController
         $om->flush();
 
         return new RedirectResponse(
-            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
+            $this->router->generate($element->getRoute(), $element->getRouteParameters())
         );
     }
 
@@ -60,7 +60,7 @@ class PositionableController
         $om->flush();
 
         return new RedirectResponse(
-            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
+            $this->router->generate($element->getRoute(), $element->getRouteParameters())
         );
     }
 
