@@ -34,13 +34,9 @@ class PositionableController
         $entity = $this->getEntity($element, $id);
         $entity->increasePosition();
 
-        $om = $element->getObjectManager();
-        $om->persist($entity);
-        $om->flush();
+        $this->persistAndFlush($element, $entity);
 
-        return new RedirectResponse(
-            $this->router->generate($element->getRoute(), $element->getRouteParameters())
-        );
+        return $this->getRedirectResponse($element);
     }
 
     /**
@@ -55,13 +51,9 @@ class PositionableController
         $entity = $this->getEntity($element, $id);
         $entity->decreasePosition();
 
-        $om = $element->getObjectManager();
-        $om->persist($entity);
-        $om->flush();
+        $this->persistAndFlush($element, $entity);
 
-        return new RedirectResponse(
-            $this->router->generate($element->getRoute(), $element->getRouteParameters())
-        );
+        return $this->getRedirectResponse($element);
     }
 
     /**
@@ -79,5 +71,27 @@ class PositionableController
         }
 
         return $entity;
+    }
+
+    /**
+     * @param CRUDElement $element
+     * @return RedirectResponse
+     */
+    private function getRedirectResponse(CRUDElement $element)
+    {
+        return new RedirectResponse(
+            $this->router->generate($element->getRoute(), $element->getRouteParameters())
+        );
+    }
+
+    /**
+     * @param CRUDElement $element
+     * @param $entity
+     */
+    private function persistAndFlush(CRUDElement $element, $entity)
+    {
+        $om = $element->getObjectManager();
+        $om->persist($entity);
+        $om->flush();
     }
 }
