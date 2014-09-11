@@ -23,6 +23,8 @@ _fsi_positionable:
 
 Sample entity:
 
+**Note:** **@Gedmo\Mapping\Annotation\SortablePosition** points column to store **position** index
+
 ```php
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
