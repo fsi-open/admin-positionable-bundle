@@ -24,10 +24,18 @@ _fsi_positionable:
 Sample entity:
 
 ```php
-use use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 
 class Promotion implements PositionableInterface
 {
+    /**
+     * @Gedmo\SortablePosition
+     * @ORM\Column(type="integer")
+     */
+    protected $position;
+
     /**
      * {@inheritdoc}
      */
