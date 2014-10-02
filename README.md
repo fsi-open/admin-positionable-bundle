@@ -17,8 +17,8 @@ Add routes to `/app/config/routing.yml`:
 
 ```yml
 _fsi_positionable:
-    resource: "@FSiAdminPositionableBundle/Resources/config/routing.xml"
-    prefix:   /
+    resource: "@FSiAdminPositionableBundle/Resources/config/routing/positionable.xml"
+    prefix:   /admin
 ```
 
 Sample entity:
