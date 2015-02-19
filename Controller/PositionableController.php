@@ -5,6 +5,7 @@ namespace FSi\Bundle\AdminPositionableBundle\Controller;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 class PositionableController
@@ -25,35 +26,35 @@ class PositionableController
     /**
      * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
      * @param $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @throws \RuntimeException
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      * @return RedirectResponse
      */
-    public function increasePositionAction(CRUDElement $element, $id)
+    public function increasePositionAction(CRUDElement $element, $id, Request $request)
     {
         $entity = $this->getEntity($element, $id);
         $entity->increasePosition();
 
         $this->persistAndFlush($element, $entity);
 
-        return $this->getRedirectResponse($element);
+        return $this->getRedirectResponse($element, $request);
     }
 
     /**
      * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
      * @param $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @throws \RuntimeException
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      * @return RedirectResponse
      */
-    public function decreasePositionAction(CRUDElement $element, $id)
+    public function decreasePositionAction(CRUDElement $element, $id, Request $request)
     {
         $entity = $this->getEntity($element, $id);
         $entity->decreasePosition();
 
         $this->persistAndFlush($element, $entity);
 
-        return $this->getRedirectResponse($element);
+        return $this->getRedirectResponse($element, $request);
     }
 
     /**
@@ -75,13 +76,18 @@ class PositionableController
 
     /**
      * @param CRUDElement $element
+     * @param Request $request
      * @return RedirectResponse
      */
-    private function getRedirectResponse(CRUDElement $element)
+    private function getRedirectResponse(CRUDElement $element, Request $request)
     {
-        return new RedirectResponse(
-            $this->router->generate($element->getRoute(), $element->getRouteParameters())
-        );
+        if ($request->query->get('redirect_uri')) {
+            $uri = $request->query->get('redirect_uri');
+        } else {
+            $uri = $this->router->generate($element->getRoute(), $element->getRouteParameters());
+        }
+
+        return new RedirectResponse($uri);
     }
 
     /**
