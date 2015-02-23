@@ -8,6 +8,8 @@ use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -19,8 +21,11 @@ class PositionableControllerSpec extends ObjectBehavior
         RouterInterface $router,
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
-        ObjectManager $om
+        ObjectManager $om,
+        Request $request,
+        ParameterBag $query
     ) {
+        $request->query = $query;
         $element->getId()->willReturn('slides');
         $element->getDataIndexer()->willReturn($indexer);
         $element->getObjectManager()->willReturn($om);
@@ -32,28 +37,30 @@ class PositionableControllerSpec extends ObjectBehavior
 
     function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
         CRUDElement $element,
-        DoctrineDataIndexer $indexer
+        DoctrineDataIndexer $indexer,
+        Request $request
     ) {
         $indexer->getData(666)->willReturn(new \StdClass());
 
         $this->shouldThrow('\RuntimeException')
-            ->duringIncreasePositionAction($element, 666);
+            ->duringIncreasePositionAction($element, 666, $request);
 
         $this->shouldThrow('\RuntimeException')
-            ->duringDecreasePositionAction($element, 666);
+            ->duringDecreasePositionAction($element, 666, $request);
     }
 
     function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
         CRUDElement $element,
-        DoctrineDataIndexer $indexer
+        DoctrineDataIndexer $indexer,
+        Request $request
     ) {
         $indexer->getData(666)->willThrow('FSi\Component\DataIndexer\Exception\RuntimeException');
 
         $this->shouldThrow('FSi\Component\DataIndexer\Exception\RuntimeException')
-            ->duringIncreasePositionAction($element, 666);
+            ->duringIncreasePositionAction($element, 666, $request);
 
         $this->shouldThrow('FSi\Component\DataIndexer\Exception\RuntimeException')
-            ->duringDecreasePositionAction($element, 666);
+            ->duringDecreasePositionAction($element, 666, $request);
     }
 
     function it_decrease_position_when_decrease_position_action_called(
@@ -61,7 +68,8 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         ObjectManager $om,
-        RouterInterface $router
+        RouterInterface $router,
+        Request $request
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
@@ -73,7 +81,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
             ->willReturn('sample-path');
 
-        $response = $this->decreasePositionAction($element, 1);
+        $response = $this->decreasePositionAction($element, 1, $request);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
@@ -83,7 +91,8 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         ObjectManager $om,
-        RouterInterface $router
+        RouterInterface $router,
+        Request $request
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
@@ -95,8 +104,28 @@ class PositionableControllerSpec extends ObjectBehavior
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
             ->willReturn('sample-path');
 
-        $response = $this->increasePositionAction($element, 1);
+        $response = $this->increasePositionAction($element, 1, $request);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
         $response->getTargetUrl()->shouldReturn('sample-path');
+    }
+
+    function it_redirects_to_redirect_uri_parameter_after_operation(
+        CRUDElement $element,
+        DoctrineDataIndexer $indexer,
+        PositionableInterface $positionableEntity,
+        Request $request,
+        ParameterBag $query
+    ) {
+        $query->get('redirect_uri')->willReturn('some_redirect_uri');
+
+        $indexer->getData(1)->willReturn($positionableEntity);
+
+        $response = $this->increasePositionAction($element, 1, $request);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('some_redirect_uri');
+
+        $response = $this->decreasePositionAction($element, 1, $request);
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 }
