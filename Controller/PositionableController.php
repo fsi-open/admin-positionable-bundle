@@ -2,7 +2,8 @@
 
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use \RuntimeException;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,14 +25,17 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
+     * @param DataIndexerElement $element
      * @param $id
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @throws \RuntimeException
+     * @param Request $request
+     * @throws RuntimeException
      * @return RedirectResponse
      */
-    public function increasePositionAction(CRUDElement $element, $id, Request $request)
-    {
+    public function increasePositionAction(
+        DataIndexerElement $element,
+        $id,
+        Request $request
+    ) {
         $entity = $this->getEntity($element, $id);
         $entity->increasePosition();
 
@@ -41,14 +45,17 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
+     * @param DataIndexerElement $element
      * @param $id
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @throws \RuntimeException
+     * @param Request $request
+     * @throws RuntimeException
      * @return RedirectResponse
      */
-    public function decreasePositionAction(CRUDElement $element, $id, Request $request)
-    {
+    public function decreasePositionAction(
+        DataIndexerElement $element,
+        $id,
+        Request $request
+    ) {
         $entity = $this->getEntity($element, $id);
         $entity->decreasePosition();
 
@@ -58,43 +65,48 @@ class PositionableController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement $element
+     * @param DataIndexerElement $element
      * @param int $id
-     * @throws \RuntimeException
+     * @throws RuntimeException
      * @return PositionableInterface
      */
-    private function getEntity(CRUDElement $element, $id)
+    private function getEntity(DataIndexerElement $element, $id)
     {
         $entity = $element->getDataIndexer()->getData($id);
 
         if (!$entity instanceof PositionableInterface) {
-            throw new \RuntimeException(sprintf('Entity with id %s does not implement PositionableInterface', $id));
+            throw new RuntimeException(
+                sprintf('Entity with id %s does not implement PositionableInterface', $id)
+            );
         }
 
         return $entity;
     }
 
     /**
-     * @param CRUDElement $element
+     * @param DataIndexerElement $element
      * @param Request $request
      * @return RedirectResponse
      */
-    private function getRedirectResponse(CRUDElement $element, Request $request)
+    private function getRedirectResponse(DataIndexerElement $element, Request $request)
     {
         if ($request->query->get('redirect_uri')) {
             $uri = $request->query->get('redirect_uri');
         } else {
-            $uri = $this->router->generate($element->getRoute(), $element->getRouteParameters());
+            $uri = $this->router->generate(
+                $element->getRoute(),
+                $element->getRouteParameters()
+            );
         }
 
         return new RedirectResponse($uri);
     }
 
     /**
-     * @param CRUDElement $element
+     * @param DataIndexerElement $element
      * @param $entity
      */
-    private function persistAndFlush(CRUDElement $element, $entity)
+    private function persistAndFlush(DataIndexerElement $element, $entity)
     {
         $om = $element->getObjectManager();
         $om->persist($entity);
