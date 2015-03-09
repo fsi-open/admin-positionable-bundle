@@ -4,6 +4,7 @@ namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
 use \RuntimeException;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,10 +104,10 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement $element
+     * @param Element $element
      * @param $entity
      */
-    private function persistAndFlush(DataIndexerElement $element, $entity)
+    private function persistAndFlush(Element $element, $entity)
     {
         $om = $element->getObjectManager();
         $om->persist($entity);
