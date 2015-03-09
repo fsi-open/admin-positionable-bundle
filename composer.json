@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "symfony/framework-bundle" : "~2.3",
         "fsi/admin-bundle" : "1.1.x-dev"
     },
