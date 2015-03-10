@@ -15,9 +15,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "symfony/framework-bundle" : "~2.3",
-        "fsi/admin-bundle" : "1.0.*"
+        "fsi/admin-bundle" : "1.1.x-dev"
     },
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev"
@@ -33,7 +33,7 @@
     "target-dir" : "FSi/Bundle/AdminPositionableBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1.x-dev"
         }
     }
 }

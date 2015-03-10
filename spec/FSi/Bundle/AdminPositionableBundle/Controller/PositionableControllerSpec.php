@@ -2,12 +2,12 @@
 
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
+use \StdClass;
 use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -40,7 +40,7 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         Request $request
     ) {
-        $indexer->getData(666)->willReturn(new \StdClass());
+        $indexer->getData(666)->willReturn(new StdClass());
 
         $this->shouldThrow('\RuntimeException')
             ->duringIncreasePositionAction($element, 666, $request);
@@ -79,7 +79,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->willReturn('sample-path');
+               ->willReturn('sample-path');
 
         $response = $this->decreasePositionAction($element, 1, $request);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
@@ -102,7 +102,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
-            ->willReturn('sample-path');
+               ->willReturn('sample-path');
 
         $response = $this->increasePositionAction($element, 1, $request);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
