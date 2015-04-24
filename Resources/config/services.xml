@@ -6,11 +6,21 @@
 
     <parameters>
         <parameter key="fsi_admin_positionable.controller.positionable.class">FSi\Bundle\AdminPositionableBundle\Controller\PositionableController</parameter>
+        <parameter key="fsi_admin_positionable.form.subscriber.sortable_collection.class">FSi\Bundle\AdminPositionableBundle\Form\EventListener\SortableCollectionListener</parameter>
+        <parameter key="fsi_admin_positionable.form.type_extension.sortable_collection.class">FSi\Bundle\AdminPositionableBundle\Form\TypeExtension\SortableCollectionExtension</parameter>
     </parameters>
 
     <services>
         <service id="fsi_admin_positionable.controller.positionable" class="%fsi_admin_positionable.controller.positionable.class%">
             <argument type="service" id="router" />
+        </service>
+
+        <service id="fsi_admin_positionable.form.subscriber.sortable_collection" class="%fsi_admin_positionable.form.subscriber.sortable_collection.class%">
+        </service>
+
+        <service id="fsi_admin_positionable.form.type_extension.sortable_collection" class="%fsi_admin_positionable.form.type_extension.sortable_collection.class%">
+            <argument type="service" id="fsi_admin_positionable.form.subscriber.sortable_collection" />
+            <tag name="form.type_extension" alias="collection" />
         </service>
     </services>
 </container>
