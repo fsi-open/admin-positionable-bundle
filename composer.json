@@ -26,11 +26,10 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "FSi\\Bundle\\AdminPositionableBundle\\": ""
         }
     },
-    "target-dir" : "FSi/Bundle/AdminPositionableBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.x-dev"
