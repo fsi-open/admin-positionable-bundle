@@ -1,13 +1,21 @@
 language: php
 
-php:
-  - 5.4
-  - 5.5
-  - 5.6
+sudo: false
+
+matrix:
+  include:
+    - php: 5.4
+      env:
+        - DEPENDENCIES='low'
+    - php: 5.5
+    - php: 5.6
+    - php: 7.0
 
 script:
+    - phpenv config-rm xdebug.ini
     - composer self-update
-    - composer update -n --prefer-source
+    - if [[ "$DEPENDENCIES" == "low" ]]; then composer update -n --prefer-lowest --prefer-source; fi;
+    - if [[ !$DEPENDENCIES ]]; then composer update -n --prefer-source; fi;
     - ./bin/phpspec run -f pretty
 
 notifications:
