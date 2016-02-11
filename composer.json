@@ -17,7 +17,7 @@
     "require": {
         "php": ">=5.4",
         "symfony/framework-bundle" : "^2.3",
-        "fsi/admin-bundle" : "~1.1@dev"
+        "fsi/admin-bundle" : "2.0.*@dev"
     },
     "require-dev": {
         "phpspec/phpspec": "^2.4"
