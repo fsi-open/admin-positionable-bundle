@@ -2,7 +2,7 @@
     "name": "fsi/admin-positionable-bundle",
     "type": "symfony-bundle",
     "description": "FSi admin positionable bundle.",
-    "keywords": ["admin", "symfony2", "bundle", "position", "positionable"],
+    "keywords": ["admin", "symfony2", "symfony3", "symfony", "bundle", "position", "positionable", "fsi"],
     "license": "MIT",
     "authors": [
         {
@@ -16,11 +16,11 @@
     ],
     "require": {
         "php": ">=5.4",
-        "symfony/framework-bundle" : "^2.3",
-        "fsi/admin-bundle" : "^2.0@dev"
+        "symfony/framework-bundle" : "^2.3|^3.0",
+        "fsi/admin-bundle" : "^2.0|^3.0@dev"
     },
     "require-dev": {
-        "phpspec/phpspec": "^2.4"
+        "phpspec/phpspec": "^2.4|^3.0"
     },
     "config": {
         "bin-dir": "bin"
@@ -34,5 +34,7 @@
         "branch-alias": {
             "dev-master": "2.0-dev"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
