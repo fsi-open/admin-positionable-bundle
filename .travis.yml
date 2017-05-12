@@ -10,13 +10,14 @@ matrix:
     - php: 5.5
     - php: 5.6
     - php: 7.0
+    - php: 7.1
 
 script:
     - phpenv config-rm xdebug.ini
     - composer self-update
     - if [[ "$DEPENDENCIES" == "low" ]]; then composer update -n --prefer-lowest --prefer-source; fi;
     - if [[ !$DEPENDENCIES ]]; then composer update -n --prefer-source; fi;
-    - ./bin/phpspec run -f pretty
+    - bin/phpspec run -f pretty
 
 notifications:
   irc: "irc.freenode.org#fsi-open"
