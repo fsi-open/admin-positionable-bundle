@@ -2,12 +2,12 @@
 
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
-use \StdClass;
 use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
+use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -30,7 +30,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $element->getDataIndexer()->willReturn($indexer);
         $element->getObjectManager()->willReturn($om);
         $element->getRoute()->willReturn('fsi_admin_crud_list');
-        $element->getRouteParameters()->willReturn(array('element' => 'slides'));
+        $element->getRouteParameters()->willReturn(['element' => 'slides']);
 
         $this->beConstructedWith($router);
     }
@@ -38,9 +38,10 @@ class PositionableControllerSpec extends ObjectBehavior
     function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
-        Request $request
+        Request $request,
+        stdClass $entity
     ) {
-        $indexer->getData(666)->willReturn(new StdClass());
+        $indexer->getData(666)->willReturn($entity);
 
         $this->shouldThrow('\RuntimeException')
             ->duringIncreasePositionAction($element, 666, $request);
@@ -78,7 +79,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
+        $router->generate('fsi_admin_crud_list', ['element' => 'slides'])
                ->willReturn('sample-path');
 
         $response = $this->decreasePositionAction($element, 1, $request);
@@ -101,7 +102,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
+        $router->generate('fsi_admin_crud_list', ['element' => 'slides'])
                ->willReturn('sample-path');
 
         $response = $this->increasePositionAction($element, 1, $request);

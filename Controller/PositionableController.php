@@ -2,10 +2,10 @@
 
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
-use \RuntimeException;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,21 +17,11 @@ class PositionableController
      */
     private $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
 
-    /**
-     * @param DataIndexerElement $element
-     * @param $id
-     * @param Request $request
-     * @throws RuntimeException
-     * @return RedirectResponse
-     */
     public function increasePositionAction(
         DataIndexerElement $element,
         $id,
@@ -45,13 +35,6 @@ class PositionableController
         return $this->getRedirectResponse($element, $request);
     }
 
-    /**
-     * @param DataIndexerElement $element
-     * @param $id
-     * @param Request $request
-     * @throws RuntimeException
-     * @return RedirectResponse
-     */
     public function decreasePositionAction(
         DataIndexerElement $element,
         $id,
@@ -75,7 +58,7 @@ class PositionableController
     {
         $entity = $element->getDataIndexer()->getData($id);
 
-        if (!$entity instanceof PositionableInterface) {
+        if (!($entity instanceof PositionableInterface)) {
             throw new RuntimeException(
                 sprintf('Entity with id %s does not implement PositionableInterface', $id)
             );

@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminPositionableBundle;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FSiAdminPositionableBundleSpec extends ObjectBehavior
 {
