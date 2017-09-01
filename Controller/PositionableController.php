@@ -4,8 +4,11 @@ namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
+use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent;
+use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvents;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use RuntimeException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,9 +20,17 @@ class PositionableController
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
-    {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router
+    ) {
         $this->router = $router;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function increasePositionAction(
@@ -28,7 +39,16 @@ class PositionableController
         Request $request
     ) {
         $entity = $this->getEntity($element, $id);
+
+        $this->eventDispatcher->dispatch(
+            PositionableEvents::PRE_APPLY,
+            new PositionableEvent($request, $element, $entity)
+        );
         $entity->increasePosition();
+        $this->eventDispatcher->dispatch(
+            PositionableEvents::POST_APPLY,
+            new PositionableEvent($request, $element, $entity)
+        );
 
         $this->persistAndFlush($element, $entity);
 
@@ -41,7 +61,16 @@ class PositionableController
         Request $request
     ) {
         $entity = $this->getEntity($element, $id);
+
+        $this->eventDispatcher->dispatch(
+            PositionableEvents::PRE_APPLY,
+            new PositionableEvent($request, $element, $entity)
+        );
         $entity->decreasePosition();
+        $this->eventDispatcher->dispatch(
+            PositionableEvents::POST_APPLY,
+            new PositionableEvent($request, $element, $entity)
+        );
 
         $this->persistAndFlush($element, $entity);
 
@@ -88,7 +117,7 @@ class PositionableController
 
     /**
      * @param Element $element
-     * @param $entity
+     * @param object $entity
      */
     private function persistAndFlush(Element $element, $entity)
     {
