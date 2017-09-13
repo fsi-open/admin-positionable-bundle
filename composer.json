@@ -15,12 +15,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=7.1",
         "symfony/framework-bundle" : "^2.3|^3.0",
         "fsi/admin-bundle" : "^2.0|^3.0@dev"
     },
     "require-dev": {
-        "phpspec/phpspec": "^2.4|^3.0"
+        "phpspec/phpspec": "^3.0"
     },
     "config": {
         "bin-dir": "bin"
