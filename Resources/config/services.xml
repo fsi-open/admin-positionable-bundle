@@ -10,6 +10,7 @@
 
     <services>
         <service id="fsi_admin_positionable.controller.positionable" class="%fsi_admin_positionable.controller.positionable.class%">
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
         </service>
     </services>
