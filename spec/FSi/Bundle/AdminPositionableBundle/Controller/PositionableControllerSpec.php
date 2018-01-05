@@ -1,17 +1,30 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent;
 use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvents;
 use FSi\Bundle\AdminPositionableBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
+use FSi\Component\DataIndexer\Exception\RuntimeException as DataIndexerRuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use RuntimeException;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -48,10 +61,10 @@ class PositionableControllerSpec extends ObjectBehavior
     ) {
         $indexer->getData(666)->willReturn($entity);
 
-        $this->shouldThrow('\RuntimeException')
+        $this->shouldThrow(RuntimeException::class)
             ->duringIncreasePositionAction($element, 666, $request);
 
-        $this->shouldThrow('\RuntimeException')
+        $this->shouldThrow(RuntimeException::class)
             ->duringDecreasePositionAction($element, 666, $request);
     }
 
@@ -60,12 +73,12 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         Request $request
     ) {
-        $indexer->getData(666)->willThrow('FSi\Component\DataIndexer\Exception\RuntimeException');
+        $indexer->getData(666)->willThrow(DataIndexerRuntimeException::class);
 
-        $this->shouldThrow('FSi\Component\DataIndexer\Exception\RuntimeException')
+        $this->shouldThrow(DataIndexerRuntimeException::class)
             ->duringIncreasePositionAction($element, 666, $request);
 
-        $this->shouldThrow('FSi\Component\DataIndexer\Exception\RuntimeException')
+        $this->shouldThrow(DataIndexerRuntimeException::class)
             ->duringDecreasePositionAction($element, 666, $request);
     }
 
@@ -75,26 +88,25 @@ class PositionableControllerSpec extends ObjectBehavior
         PositionableInterface $positionableEntity,
         ObjectManager $om,
         EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
         Request $request
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
         $eventDispatcher->dispatch(
             PositionableEvents::PRE_APPLY,
-            Argument::type('FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent')
+            Argument::type(PositionableEvent::class)
         )->shouldBeCalled();
         $positionableEntity->decreasePosition()->shouldBeCalled();
         $eventDispatcher->dispatch(
             PositionableEvents::POST_APPLY,
-            Argument::type('FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent')
+            Argument::type(PositionableEvent::class)
         )->shouldBeCalled();
 
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $response = $this->decreasePositionAction($element, 1, $request);
-        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
@@ -104,26 +116,25 @@ class PositionableControllerSpec extends ObjectBehavior
         PositionableInterface $positionableEntity,
         ObjectManager $om,
         EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
         Request $request
     ) {
         $indexer->getData(1)->willReturn($positionableEntity);
 
         $eventDispatcher->dispatch(
             PositionableEvents::PRE_APPLY,
-            Argument::type('FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent')
+            Argument::type(PositionableEvent::class)
         )->shouldBeCalled();
         $positionableEntity->increasePosition()->shouldBeCalled();
         $eventDispatcher->dispatch(
             PositionableEvents::POST_APPLY,
-            Argument::type('FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent')
+            Argument::type(PositionableEvent::class)
         )->shouldBeCalled();
 
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $response = $this->increasePositionAction($element, 1, $request);
-        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
@@ -139,11 +150,11 @@ class PositionableControllerSpec extends ObjectBehavior
         $indexer->getData(1)->willReturn($positionableEntity);
 
         $response = $this->increasePositionAction($element, 1, $request);
-        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
 
         $response = $this->decreasePositionAction($element, 1, $request);
-        $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 }
