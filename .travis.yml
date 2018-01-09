@@ -2,15 +2,20 @@ language: php
 
 sudo: false
 
+cache:
+    directories:
+        - vendor
+        - bin
+
 matrix:
-  include:
-    - php: 7.1
-      env:
-        - COMPOSER_FLAGS='--prefer-lowest'
-    - php: 7.1
+    include:
+        - php: 7.1
+          env:
+              - COMPOSER_FLAGS='--prefer-lowest'
+        - php: 7.1
 
 before_script:
     - phpenv config-rm xdebug.ini
-    - composer update $COMPOSER_FLAGS
+    - travis_wait 40 composer update $COMPOSER_FLAGS
 
 script: bin/phpspec run -v -f pretty

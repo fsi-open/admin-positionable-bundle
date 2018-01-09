@@ -9,7 +9,7 @@
     </parameters>
 
     <services>
-        <service id="fsi_admin_positionable.controller.positionable" class="%fsi_admin_positionable.controller.positionable.class%">
+        <service id="fsi_admin_positionable.controller.positionable" class="%fsi_admin_positionable.controller.positionable.class%" public="true">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
         </service>

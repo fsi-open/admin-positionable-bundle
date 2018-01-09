@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
@@ -11,6 +20,7 @@ use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class PositionableController
@@ -37,7 +47,7 @@ class PositionableController
         DataIndexerElement $element,
         $id,
         Request $request
-    ) {
+    ): Response {
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(
@@ -59,7 +69,7 @@ class PositionableController
         DataIndexerElement $element,
         $id,
         Request $request
-    ) {
+    ): Response {
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(
@@ -79,11 +89,11 @@ class PositionableController
 
     /**
      * @param DataIndexerElement $element
-     * @param int $id
+     * @param mixed $id
      * @throws RuntimeException
      * @return PositionableInterface
      */
-    private function getEntity(DataIndexerElement $element, $id)
+    private function getEntity(DataIndexerElement $element, $id): PositionableInterface
     {
         $entity = $element->getDataIndexer()->getData($id);
 
@@ -96,12 +106,7 @@ class PositionableController
         return $entity;
     }
 
-    /**
-     * @param DataIndexerElement $element
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    private function getRedirectResponse(DataIndexerElement $element, Request $request)
+    private function getRedirectResponse(DataIndexerElement $element, Request $request): RedirectResponse
     {
         if ($request->query->get('redirect_uri')) {
             $uri = $request->query->get('redirect_uri');
@@ -119,7 +124,7 @@ class PositionableController
      * @param Element $element
      * @param object $entity
      */
-    private function persistAndFlush(Element $element, $entity)
+    private function persistAndFlush(Element $element, $entity): void
     {
         $om = $element->getObjectManager();
         $om->persist($entity);
