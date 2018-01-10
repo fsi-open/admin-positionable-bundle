@@ -7,16 +7,10 @@ matrix:
     - php: 5.4
       env:
         - COMPOSER_FLAGS='--prefer-lowest'
-    - php: 5.5
-    - php: 5.6
-    - php: 7.0
     - php: 7.1
 
 before_script:
     - phpenv config-rm xdebug.ini
-    - composer update $COMPOSER_FLAGS
+    - travis_wait 30 composer update $COMPOSER_FLAGS
 
 script: bin/phpspec run -v -f pretty
-
-notifications:
-  irc: "irc.freenode.org#fsi-open"
