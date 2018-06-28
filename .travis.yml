@@ -5,17 +5,17 @@ sudo: false
 cache:
     directories:
         - vendor
-        - bin
 
 matrix:
     include:
         - php: 7.1
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
-        - php: 7.1
+        - php: 7.2
 
 before_script:
     - phpenv config-rm xdebug.ini
-    - travis_wait 40 composer update $COMPOSER_FLAGS
+    - composer validate
+    - composer update $COMPOSER_FLAGS
 
-script: bin/phpspec run -v -f pretty
+script: vendor/bin/phpspec run -f pretty

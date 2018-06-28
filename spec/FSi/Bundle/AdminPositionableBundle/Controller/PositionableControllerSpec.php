@@ -61,11 +61,8 @@ class PositionableControllerSpec extends ObjectBehavior
     ) {
         $indexer->getData(666)->willReturn($entity);
 
-        $this->shouldThrow(RuntimeException::class)
-            ->duringIncreasePositionAction($element, 666, $request);
-
-        $this->shouldThrow(RuntimeException::class)
-            ->duringDecreasePositionAction($element, 666, $request);
+        $this->shouldThrow(RuntimeException::class)->duringIncreasePositionAction($element, 666, $request);
+        $this->shouldThrow(RuntimeException::class)->duringDecreasePositionAction($element, 666, $request);
     }
 
     function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
@@ -75,11 +72,8 @@ class PositionableControllerSpec extends ObjectBehavior
     ) {
         $indexer->getData(666)->willThrow(DataIndexerRuntimeException::class);
 
-        $this->shouldThrow(DataIndexerRuntimeException::class)
-            ->duringIncreasePositionAction($element, 666, $request);
-
-        $this->shouldThrow(DataIndexerRuntimeException::class)
-            ->duringDecreasePositionAction($element, 666, $request);
+        $this->shouldThrow(DataIndexerRuntimeException::class)->duringIncreasePositionAction($element, 666, $request);
+        $this->shouldThrow(DataIndexerRuntimeException::class)->duringDecreasePositionAction($element, 666, $request);
     }
 
     function it_decreases_position_when_decrease_position_action_called(
