@@ -13,7 +13,6 @@ namespace FSi\Bundle\AdminPositionableBundle\Event;
 
 final class PositionableEvents
 {
-    const PRE_APPLY = 'admin.positionable.pre_apply';
-
-    const POST_APPLY = 'admin.positionable.post_apply';
+    public const PRE_APPLY = 'admin.positionable.pre_apply';
+    public const POST_APPLY = 'admin.positionable.post_apply';
 }

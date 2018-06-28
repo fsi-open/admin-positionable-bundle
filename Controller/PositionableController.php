@@ -35,19 +35,14 @@ class PositionableController
      */
     private $eventDispatcher;
 
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router
-    ) {
+    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    {
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function increasePositionAction(
-        DataIndexerElement $element,
-        $id,
-        Request $request
-    ): Response {
+    public function increasePositionAction(DataIndexerElement $element, $id, Request $request): Response
+    {
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(
@@ -65,11 +60,8 @@ class PositionableController
         return $this->getRedirectResponse($element, $request);
     }
 
-    public function decreasePositionAction(
-        DataIndexerElement $element,
-        $id,
-        Request $request
-    ): Response {
+    public function decreasePositionAction(DataIndexerElement $element, $id, Request $request): Response
+    {
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(
@@ -97,7 +89,7 @@ class PositionableController
     {
         $entity = $element->getDataIndexer()->getData($id);
 
-        if (!($entity instanceof PositionableInterface)) {
+        if (false === $entity instanceof PositionableInterface) {
             throw new RuntimeException(
                 sprintf('Entity with id %s does not implement PositionableInterface', $id)
             );
@@ -111,10 +103,7 @@ class PositionableController
         if ($request->query->get('redirect_uri')) {
             $uri = $request->query->get('redirect_uri');
         } else {
-            $uri = $this->router->generate(
-                $element->getRoute(),
-                $element->getRouteParameters()
-            );
+            $uri = $this->router->generate($element->getRoute(), $element->getRouteParameters());
         }
 
         return new RedirectResponse($uri);

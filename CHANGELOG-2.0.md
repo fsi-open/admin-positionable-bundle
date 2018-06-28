@@ -1,8 +1,8 @@
 # CHANGELOG for version 2.0
 
-## Symfony3 support
+## Symfony 3 and 4 support
 
-As of this version, both Symfony 2 and 3 are suported.
+As of this version, Symfony in versions 2, 3 and 4 is suported.
 
 ## Introduced new events
 

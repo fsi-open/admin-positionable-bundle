@@ -40,26 +40,17 @@ class PositionableEvent extends Event
         $this->object = $object;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return Element
-     */
-    public function getElement()
+    public function getElement(): Element
     {
         return $this->element;
     }
 
-    /**
-     * @return PositionableInterface
-     */
-    public function getObject()
+    public function getObject(): PositionableInterface
     {
         return $this->object;
     }
