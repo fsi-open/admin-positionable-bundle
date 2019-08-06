@@ -88,10 +88,13 @@ class PositionableController
     private function getEntity(DataIndexerElement $element, $id): PositionableInterface
     {
         $entity = $element->getDataIndexer()->getData($id);
-
         if (false === $entity instanceof PositionableInterface) {
             throw new RuntimeException(
-                sprintf('Entity with id %s does not implement PositionableInterface', $id)
+                sprintf(
+                    'Entity with id "%s" does not implement "%s"',
+                    $id,
+                    PositionableInterface::class
+                )
             );
         }
 
