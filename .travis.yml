@@ -1,7 +1,5 @@
 language: php
 
-sudo: false
-
 cache:
     directories:
         - vendor
@@ -11,7 +9,7 @@ matrix:
         - php: 7.1
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
-        - php: 7.2
+        - php: 7.3
 
 before_script:
     - phpenv config-rm xdebug.ini
