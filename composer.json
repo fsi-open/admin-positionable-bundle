@@ -15,15 +15,15 @@
         }
     ],
     "require": {
-        "fsi/admin-bundle" : "^2.0|^3.0",
+        "fsi/admin-bundle" : "^3.0",
         "php": ">=7.1",
-        "symfony/config" : "^3.4|^4.0",
-        "symfony/dependency-injection" : "^3.4|^4.0",
-        "symfony/event-dispatcher" : "^3.4|^4.0",
-        "symfony/framework-bundle" : "^3.4|^4.0",
-        "symfony/http-foundation" : "^3.4|^4.0",
-        "symfony/http-kernel" : "^3.4|^4.0",
-        "symfony/routing" : "^3.4|^4.0"
+        "symfony/config" : "^4.0",
+        "symfony/dependency-injection" : "^4.0",
+        "symfony/event-dispatcher" : "^4.0",
+        "symfony/framework-bundle" : "^4.0",
+        "symfony/http-foundation" : "^4.0",
+        "symfony/http-kernel" : "^4.0",
+        "symfony/routing" : "^4.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^5.0",
