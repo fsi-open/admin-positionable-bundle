@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvent;
 use FSi\Bundle\AdminPositionableBundle\Event\PositionableEvents;
@@ -59,10 +59,10 @@ class PositionableControllerSpec extends ObjectBehavior
         Request $request,
         stdClass $entity
     ) {
-        $indexer->getData(666)->willReturn($entity);
+        $indexer->getData('666')->willReturn($entity);
 
-        $this->shouldThrow(RuntimeException::class)->duringIncreasePositionAction($element, 666, $request);
-        $this->shouldThrow(RuntimeException::class)->duringDecreasePositionAction($element, 666, $request);
+        $this->shouldThrow(RuntimeException::class)->duringIncreasePositionAction($element, '666', $request);
+        $this->shouldThrow(RuntimeException::class)->duringDecreasePositionAction($element, '666', $request);
     }
 
     function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
@@ -70,10 +70,10 @@ class PositionableControllerSpec extends ObjectBehavior
         DoctrineDataIndexer $indexer,
         Request $request
     ) {
-        $indexer->getData(666)->willThrow(DataIndexerRuntimeException::class);
+        $indexer->getData('666')->willThrow(DataIndexerRuntimeException::class);
 
-        $this->shouldThrow(DataIndexerRuntimeException::class)->duringIncreasePositionAction($element, 666, $request);
-        $this->shouldThrow(DataIndexerRuntimeException::class)->duringDecreasePositionAction($element, 666, $request);
+        $this->shouldThrow(DataIndexerRuntimeException::class)->duringIncreasePositionAction($element, '666', $request);
+        $this->shouldThrow(DataIndexerRuntimeException::class)->duringDecreasePositionAction($element, '666', $request);
     }
 
     function it_decreases_position_when_decrease_position_action_called(
@@ -84,7 +84,7 @@ class PositionableControllerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Request $request
     ) {
-        $indexer->getData(1)->willReturn($positionableEntity);
+        $indexer->getData('1')->willReturn($positionableEntity);
 
         $eventDispatcher->dispatch(
             PositionableEvents::PRE_APPLY,
@@ -99,7 +99,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $response = $this->decreasePositionAction($element, 1, $request);
+        $response = $this->decreasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
@@ -112,7 +112,7 @@ class PositionableControllerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Request $request
     ) {
-        $indexer->getData(1)->willReturn($positionableEntity);
+        $indexer->getData('1')->willReturn($positionableEntity);
 
         $eventDispatcher->dispatch(
             PositionableEvents::PRE_APPLY,
@@ -127,7 +127,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $response = $this->increasePositionAction($element, 1, $request);
+        $response = $this->increasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
@@ -141,13 +141,13 @@ class PositionableControllerSpec extends ObjectBehavior
     ) {
         $query->get('redirect_uri')->willReturn('some_redirect_uri');
 
-        $indexer->getData(1)->willReturn($positionableEntity);
+        $indexer->getData('1')->willReturn($positionableEntity);
 
-        $response = $this->increasePositionAction($element, 1, $request);
+        $response = $this->increasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
 
-        $response = $this->decreasePositionAction($element, 1, $request);
+        $response = $this->decreasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
